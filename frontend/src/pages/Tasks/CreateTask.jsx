@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import useTasks from "../../hooks/useTasks";
+import useTeams from "../../hooks/useTeams";
 import { validateRequired } from "../../utils/validation";
 
 export default function CreateTask() {
   const { createTask } = useTasks();
+  const { teams } = useTeams();
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
-    title: "", description: "", dueDate: ""
+    title: "", description: "", dueDate: "", teamId: ""
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -99,6 +101,30 @@ export default function CreateTask() {
                   value={form.description}
                   onChange={(e)=>setForm({...form,description:e.target.value})}
                 />
+              </div>
+
+              {/* Team Assignment */}
+              <div className="space-y-2">
+                <label className="text-sm font-bold text-gray-700 ml-1">Assign to Team <span className="text-gray-400 font-normal">(Optional)</span></label>
+                <div className="relative">
+                  <select 
+                    className="w-full px-5 py-3.5 rounded-xl border border-gray-200 bg-gray-50/30 focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 focus:bg-white transition-all duration-200 outline-none font-medium text-gray-600 appearance-none cursor-pointer"
+                    value={form.teamId}
+                    onChange={(e)=>setForm({...form,teamId:e.target.value})}
+                  >
+                    <option value="">No team assigned</option>
+                    {teams.map((team) => (
+                      <option key={team._id} value={team._id}>
+                        {team.name}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                    <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                  </div>
+                </div>
               </div>
 
               {/* Due Date Input */}
