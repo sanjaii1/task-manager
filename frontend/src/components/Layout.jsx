@@ -1,13 +1,19 @@
 import React from 'react';
 import Header from './Header';
+import Sidebar from './Sidebar';
 
 const Layout = ({ children }) => {
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
             <Header />
-            <main className="flex-grow container mx-auto px-4 py-8">
-                {children}
-            </main>
+            <div className="flex flex-1">
+                <Sidebar />
+                <main className="flex-1 p-8 overflow-y-auto">
+                    <div className="max-w-7xl mx-auto">
+                        {children}
+                    </div>
+                </main>
+            </div>
         </div>
     );
 };

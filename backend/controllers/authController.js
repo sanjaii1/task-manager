@@ -14,7 +14,6 @@ exports.register = async (req, res) => {
       return res.status(400).json({ message: "Email already exists" });
     }
 
-
     if (role === 'admin') {
       const adminExists = await User.findOne({ role: 'admin' });
       if (adminExists) {
