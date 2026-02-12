@@ -1,15 +1,27 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 
+import Login from "./pages/Login/Login";
+import Register from "./pages/Register/Register";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import Teams from "./pages/Teams/Teams";
+import Tasks from "./pages/Tasks/Tasks";
+import CreateTask from "./pages/Tasks/CreateTask";
 
-function App() {
-  console.log('App component rendered!');
-  
+export default function App() {
   return (
-    <div 
-      className="bg-red-500 h-[100vh] w-[100vw] flex items-center justify-center"
-    >
-      <h1>Testing</h1>
-    </div>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+          <Route path="/teams" element={<ProtectedRoute><Teams /></ProtectedRoute>} />
+          <Route path="/tasks" element={<ProtectedRoute><Tasks /></ProtectedRoute>} />
+          <Route path="/create-task" element={<ProtectedRoute><CreateTask /></ProtectedRoute>} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
-
-export default App;

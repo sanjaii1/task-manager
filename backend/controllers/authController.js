@@ -14,6 +14,14 @@ exports.register = async (req, res) => {
       return res.status(400).json({ message: "Email already exists" });
     }
 
+
+    if (role === 'admin') {
+      const adminExists = await User.findOne({ role: 'admin' });
+      if (adminExists) {
+        return res.status(400).json({ message: "Admin account already exists" });
+      }
+    }
+
     const hashed = await bcrypt.hash(password, 10);
 
     const user = await User.create({
@@ -80,6 +88,7 @@ exports.login = async (req, res) => {
       token: generateToken(user._id, user.role),
       user: userResponse,
     });
+
   } catch (error) {
     console.error("Login Error:", error.message);
     console.error("Stack:", error.stack);
@@ -88,5 +97,15 @@ exports.login = async (req, res) => {
       message: "Login failed. Please try again.",
       ...(process.env.NODE_ENV === "development" && { error: error.message })
     });
+  }
+};
+
+exports.checkAdminExists = async (req, res) => {
+  try {
+    const adminCount = await User.countDocuments({ role: "admin" });
+    res.json({ exists: adminCount > 0 });
+  } catch (error) {
+    console.error("Check Admin Error:", error.message);
+    res.status(500).json({ message: "Server error" });
   }
 };
