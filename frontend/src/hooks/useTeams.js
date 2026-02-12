@@ -18,5 +18,20 @@ export default function useTeams() {
     fetchTeams();
   }, []);
 
-  return { teams, createTeam };
+  const addMember = async (teamId, email) => {
+    await API.post(`/teams/${teamId}/members`, { email });
+    fetchTeams();
+  };
+
+  const removeMember = async (teamId, memberId) => {
+    await API.delete(`/teams/${teamId}/members`, { data: { memberId } });
+    fetchTeams();
+  };
+
+  const deleteTeam = async (teamId) => {
+    await API.delete(`/teams/${teamId}`);
+    fetchTeams();
+  };
+
+  return { teams, createTeam, addMember, removeMember, deleteTeam };
 }

@@ -15,6 +15,7 @@ export default function Sidebar() {
   const menuItems = [
     { name: 'Dashboard', path: '/' },
     ...(user?.role?.toLowerCase() === 'admin' ? [{ name: 'Teams', path: '/teams' }] : []),
+    ...(user?.role?.toLowerCase() === 'admin' ? [{ name: 'Users', path: '/users' }] : []),
     { name: 'Tasks', path: '/tasks' },
 
   ];

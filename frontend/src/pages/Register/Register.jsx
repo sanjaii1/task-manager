@@ -49,7 +49,6 @@ export default function Register() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
-    // Clear error when user types
     if (errors[name]) {
       setErrors({ ...errors, [name]: null });
     }
@@ -62,7 +61,16 @@ export default function Register() {
       await handleRegister(form);
       navigate("/login");
     } catch (err) {
-      setErrors({ form: "Failed to register. Please try again." });
+      if (err.response?.data?.errors && Array.isArray(err.response.data.errors)) {
+        
+        const errorMessages = err.response.data.errors.join(". ");
+        setErrors({ form: errorMessages });
+      } else if (err.response?.data?.message) {
+       
+        setErrors({ form: err.response.data.message });
+      } else {
+        setErrors({ form: "Failed to register. Please try again." });
+      }
     }
   };
 

@@ -108,3 +108,14 @@ exports.checkAdminExists = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find().select("name email role");
+    res.json(users);
+  } catch (error) {
+    console.error("Get All Users Error:", error.message);
+    res.status(500).json({ message: "Failed to fetch users" });
+  }
+};
+
